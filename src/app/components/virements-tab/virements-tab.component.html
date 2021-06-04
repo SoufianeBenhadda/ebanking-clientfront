@@ -1,0 +1,24 @@
+<app-navbar></app-navbar>
+
+<section id="main-content">
+    <section class="wrapper">
+        <h1>Les virements de , {{ currentClientName }}</h1>
+<table id="table" >
+<thead>
+    <tr><th>id</th><th>creancier</th><th>debiteur</th><th>Envoyé</th><th>reçu</th><th>date</th></tr>
+</thead>
+<tbody>
+    <tr *ngFor="let data of virement">
+        <td>{{data.id}}</td>
+        <td>{{data.creancier.numero}}</td>
+        <td>{{data.debiteur.numero}}</td>
+        <td>{{data.sommeEnv}} </td>
+        <td>{{data.sommeRecu}}</td>
+        <td>{{data.creationDate}}</td>
+    </tr>
+</tbody>
+
+</table>
+    </section>
+
+</section>

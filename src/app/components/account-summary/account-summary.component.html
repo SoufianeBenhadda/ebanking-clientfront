@@ -1,0 +1,39 @@
+
+<app-navbar></app-navbar>
+<section id="main-content">
+  <section class="wrapper">
+
+
+    <h1>Bonjour, {{ currentClientName }}</h1>
+
+    
+      <div class="cardList">
+        <ng-container *ngFor="let account of accounts" >
+          <div class="cardListItem"> 
+            <h3><span class="blue">Numéro de compte:</span> {{ account.numero }}</h3>
+            
+            <h1 class="solde">
+              Solde : {{ account.solde | number: "1.2-2" }}
+            </h1>
+           
+            <button
+              mat-raised-button
+              color="primary"
+              [routerLink]="['/compte', account.id, 'virements']"
+            >
+              Accéder au activités
+            </button>
+            <button
+              mat-raised-button
+              color="primary"
+              [routerLink]="['/compte', account.id, 'virementForm']"
+            >
+              Faire un virement
+            </button>
+      
+          </div>
+          </ng-container>
+      </div>
+    </section>
+  </section>
+    
