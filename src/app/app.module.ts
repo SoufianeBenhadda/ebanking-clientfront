@@ -52,9 +52,11 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
     LoginClientComponent,
       AccountSummaryComponent,
-      VirementsTabComponent
+      VirementsTabComponent,
+      
   ],
   imports: [
+    NgbModule,
     FormsModule,
     ReactiveFormsModule,
     BrowserModule,

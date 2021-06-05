@@ -16,5 +16,8 @@ export class VirementsService {
     return this.http.get<VirementsModule[]>(
       'http://localhost:8091/compte/' + code +  '/virements'
     );
+  } public save(transfer: VirementsModule) {
+    console.log("fctsave");
+    return this.http.post<VirementsModule>(this.url + 's', transfer);
   }
 }
