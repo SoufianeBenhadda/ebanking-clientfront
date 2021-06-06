@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Form, FormControl, FormGroup, Validators } from '@angular/forms';
-import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalConfig, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Accounts } from 'src/app/account/module/account.module';
 import { ClientService } from 'src/app/client/service/client.service';
 import {AccountService} from 'src/app/account/service/account.service';
 import { VirementsModule } from 'src/app/virements/virements.module';
 import { VirementsService } from 'src/app/virements/virements.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-account-summary',
   templateUrl: './account-summary.component.html',
@@ -20,6 +21,8 @@ export class AccountSummaryComponent implements OnInit {
   currentClientName: string;
   accounts: Accounts[];
   // dkche tlvirements
+  modalReference: NgbModalRef;
+  modalReference2: NgbModalRef;
   accountNotFound = false;
   virement : VirementsModule;
   form: FormGroup;
@@ -27,20 +30,11 @@ export class AccountSummaryComponent implements OnInit {
   creancier:Accounts;
   sommeenvoye:string;
 
-  get debiteur1() {
-    return this.form.get('debiteur');
-  }
-  get creancier1() {
-    return this.form.get('creancier');
-  }
-  get somme() {
-    return this.form.get('somme');
-  }
 
   constructor(private clientService: ClientService,
     private accountservice : AccountService,
     private virementservice : VirementsService,
-    config: NgbModalConfig, private modalService: NgbModal
+    config: NgbModalConfig, private modalService: NgbModal,private modalService2: NgbModal
     ) {config.backdrop = 'static';
     config.keyboard = false;
     this.virement= new VirementsModule();
@@ -48,13 +42,19 @@ export class AccountSummaryComponent implements OnInit {
     this.debiteur=new Accounts();
   }
 
+  successAlertNotification(){
+    console.log("dkhltalert")
+    Swal.fire('Hi', 'Congrats! operation successfull', 'success')
+  }
 
-
-    vire(viremeent : any) {
+  swalTest(){
+    this.successAlertNotification();
+  }
+  onSubmit(viremeent : any) {
       console.log("blablo  " +viremeent.creancier);
       this.accountservice.findAccountNum(viremeent.creancier).subscribe(
         (data) => {
-        
+          
           //get l account lash bghit nsift
           this.creancier = data;
           console.log(this.creancier);
@@ -75,11 +75,14 @@ export class AccountSummaryComponent implements OnInit {
               this.virementservice.save(this.virement).subscribe(
                 (response: VirementsModule) => {
                   console.log(response);
-                  
+                  this.modalReference2.close();
+                  this.modalReference.close();
+                  this.successAlertNotification();
                   
                 },
                 (error: HttpErrorResponse) => {
                   alert(error.message);
+                  this.modalReference2.close();
                 
                 }
               );
@@ -89,6 +92,7 @@ export class AccountSummaryComponent implements OnInit {
           );
         },
         (error) => {
+          this.modalReference2.close();
           this.accountNotFound = true;
           console.log('accfound', this.accountNotFound);
           this.form['creancier'].setErrors({ incorrect: true });
@@ -116,7 +120,19 @@ export class AccountSummaryComponent implements OnInit {
     }
     open(content) {
      
-      this.modalService.open(content);
+      this.accountNotFound = false;
+          
+      this.modalReference = this.modalService.open(content);
+
+
+    }
+    open2(content) {
+     
+     
+      
+      this.modalReference2 = this.modalService2.open(content);
+
+
     }
   
 }

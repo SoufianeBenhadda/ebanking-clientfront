@@ -16,5 +16,5 @@ export class VirementsModule {
   debiteur: Accounts;
   sommeEnv: number;
   sommeRecu: number;
-  creationDate: Date;
+  date: Date;
 }
