@@ -29,7 +29,7 @@ export class AccountSummaryComponent implements OnInit {
   debiteur:Accounts;
   creancier:Accounts;
   sommeenvoye:string;
-
+  confirm = false;
 
   constructor(private clientService: ClientService,
     private accountservice : AccountService,
@@ -47,10 +47,25 @@ export class AccountSummaryComponent implements OnInit {
     Swal.fire('Hi', 'Congrats! operation successfull', 'success')
   }
 
-  swalTest(){
-    this.successAlertNotification();
+
+  swalConfirmation(){
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes !'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        
+      }
+    })
   }
   onSubmit(viremeent : any) {
+    
+    
       console.log("blablo  " +viremeent.creancier);
       this.accountservice.findAccountNum(viremeent.creancier).subscribe(
         (data) => {
@@ -127,12 +142,7 @@ export class AccountSummaryComponent implements OnInit {
 
     }
     open2(content) {
-     
-     
-      
       this.modalReference2 = this.modalService2.open(content);
-
-
     }
   
 }

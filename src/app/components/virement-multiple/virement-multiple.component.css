@@ -1,0 +1,28 @@
+.wrapper {
+	display: inline-block;
+	margin-top: 70px;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+#main-content {
+	margin-left: 210px;
+    margin-right: 50px;
+}
+
+#gridlist{
+    margin-left: 250px;
+    margin-right: 50px;
+}
+
+mat-form-field{
+  width: 70%;
+}
+
+.container{
+  background-color: rgb(247, 247, 247);
+  margin-bottom: 15px;
+}
+.example-form{
+  padding-left: 30px;
+  width:65%
+}

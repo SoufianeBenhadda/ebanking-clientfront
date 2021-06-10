@@ -45,6 +45,11 @@ import { BasicAuthHtppInterceptorService } from './loginservice/basic-auth-htpp-
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { VirementsTabComponent } from './components/virements-tab/virements-tab.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { VirementMultipleComponent } from './components/virement-multiple/virement-multiple.component';
+import { Ng2SmartTableModule } from 'ng2-smart-table';
+import { MatNativeDateModule } from '@angular/material/core';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -53,6 +58,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     LoginClientComponent,
       AccountSummaryComponent,
       VirementsTabComponent,
+      VirementMultipleComponent,
       
   ],
   imports: [
@@ -104,6 +110,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     MatPaginatorModule,
     MatFormFieldModule,
     NgbModule,
+    MatNativeDateModule, 
+
+    Ng2SmartTableModule,
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

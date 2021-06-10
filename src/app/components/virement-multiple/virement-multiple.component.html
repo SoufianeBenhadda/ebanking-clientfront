@@ -1,0 +1,88 @@
+<app-navbar></app-navbar>
+<section id="main-content">
+    <section class="wrapper">
+        <h1>Virement multiple de xxxx</h1>
+
+    </section>
+
+</section>
+
+<div id="gridlist">
+    <h4>Choisir le bénéficiare : </h4>
+        <div class="container">
+            <ng2-smart-table [settings]="tab1" [source]="source"
+               (createConfirm)="onCreateConfirm($event)"
+            ></ng2-smart-table>
+        </div>
+    <h4>Bénéficiares des virements : </h4>
+        <div class="container">
+            <ng2-smart-table [settings]="tab2"></ng2-smart-table>
+        </div>
+    
+    <mat-grid-list  cols="2" rowHeight="8:1">
+
+        <mat-grid-tile>
+            
+            <h4>Choisir un compte : </h4>
+            <mat-form-field appearance="fill">
+            <mat-label>Numéro de compte</mat-label>
+            <mat-select>
+                <mat-option *ngFor="let compte of comptes" [value]="compte.value">
+                {{compte.viewValue}}
+                </mat-option>
+            </mat-select>
+            </mat-form-field>
+
+        </mat-grid-tile>
+        
+        <mat-grid-tile>
+            <h4>Date de création :</h4>
+            <mat-form-field appearance="fill">
+                <mat-label>Value binding</mat-label>
+                <input matInput [matDatepicker]="picker1" [value]="dateCre.value">
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+            
+        </mat-grid-tile>
+        
+        <mat-grid-tile>
+            <h4>Date d'exécution : </h4>
+            <mat-form-field appearance="fill">
+            <mat-label>Value binding</mat-label>
+            <input matInput [matDatepicker]="picker2" [value]="dateExec.value">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+            <h4>Motif : </h4>
+            <form class="example-form">
+                <mat-form-field class="motif">
+                    <mat-label>Motif</mat-label>
+                    <textarea matInput placeholder="Ex. It makes me feel..."></textarea>
+                </mat-form-field>
+            </form>
+        </mat-grid-tile>
+
+
+        <mat-grid-tile>
+            <h4>Nombre de bénéficiaires :</h4>
+            <form class="example-form">
+                <mat-form-field class="example-full-width">
+                <input matInput type="number">
+                </mat-form-field>
+            </form>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <h4>Montant : </h4>
+            <form class="example-form">
+                <mat-form-field class="example-full-width">
+                <input matInput type="number">
+                </mat-form-field>
+            </form>
+        </mat-grid-tile>
+    </mat-grid-list>
+
+</div>
