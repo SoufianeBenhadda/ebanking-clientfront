@@ -16,16 +16,16 @@ export class BeneficiaireService {
     return this.http.post<BeneficiaireModule[]>(this.accountUrl ,beneficiaire);
     
   }
-  public DeleteBenef(id: string): Observable<BeneficiaireModule[]> {
-    return this.http.delete<BeneficiaireModule[]>(this.accountUrl + 's?id=' + id);
-    
+  public DeleteBenef(id: number): Observable<BeneficiaireModule[]> {
+    return this.http.delete<BeneficiaireModule[]>(`${this.accountUrl}/${id}`);
+
   }
   public GetBenefById(id:string): Observable<BeneficiaireModule[]> {
-    return this.http.get<BeneficiaireModule[]>(this.accountUrl  + 's?id=' + id);
+    return this.http.get<BeneficiaireModule[]>(`${this.accountUrl}/${id}`);
     
   }
   public GetAllBenefOfClient(id:string): Observable<BeneficiaireModule[]> {
-    return this.http.get<BeneficiaireModule[]>('http://localhost:8091/client/${id}/beneficiaire');
+    return this.http.get<BeneficiaireModule[]>('http://localhost:8091/client/36/benef');
     
   }
 }

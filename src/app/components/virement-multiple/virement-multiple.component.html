@@ -1,7 +1,7 @@
 <app-navbar></app-navbar>
 <section id="main-content">
     <section class="wrapper">
-        <h1>Virement multiple de xxxx</h1>
+        <h1>Virement multiple de {{ currentClientName }}</h1>
 
     </section>
 
@@ -10,13 +10,15 @@
 <div id="gridlist">
     <h4>Choisir le bénéficiare : </h4>
         <div class="container">
-            <ng2-smart-table [settings]="tab1" [source]="source"
-               (createConfirm)="onCreateConfirm($event)"
-            ></ng2-smart-table>
+            <ng2-smart-table [settings]="tab1" [source]="this.beneficiaires"
+               (createConfirm)="onAddClient($event)"
+               (deleteConfirm)="onDeleteClient($event)"
+               (custom)="onCustomAction($event)" 
+               ></ng2-smart-table>
         </div>
     <h4>Bénéficiares des virements : </h4>
         <div class="container">
-            <ng2-smart-table [settings]="tab2"></ng2-smart-table>
+            <ng2-smart-table [settings]="tab2" [source]="sourceTab2"></ng2-smart-table>
         </div>
     
     <mat-grid-list  cols="2" rowHeight="8:1">
