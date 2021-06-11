@@ -11,5 +11,6 @@ export interface BeneficiaireModule {
   client: Client;
   compteOwner:Accounts;
   numeroCompte: string;
+  montant : number;
   
 }

@@ -7,6 +7,7 @@ import { AccountService } from 'src/app/account/service/account.service';
 import { BeneficiaireModule } from 'src/app/beneficiaire/module/beneficiaire/beneficiaire.module';
 import { BeneficiaireService } from 'src/app/beneficiaire/service/beneficiaire.service';
 import { ClientService } from 'src/app/client/service/client.service';
+import Swal from 'sweetalert2';
 
 
 interface Compte {
@@ -102,13 +103,17 @@ export class VirementMultipleComponent implements OnInit {
 
   tab2 = {
     actions: { add: false ,edit: true, delete: true,},
+    delete: {
+      deleteButtonContent: 'Delete',
+      confirmDelete: true
+    },
     columns: {
       numeroCompte: {
         title: 'Numéro de compte',
         editable:false,
         addable:false
       },
-      m: {
+      montant: {
         title: 'Montant'
       },
       compteOwner:{
@@ -131,22 +136,7 @@ export class VirementMultipleComponent implements OnInit {
   serializedDate = new FormControl((new Date()).toISOString());
 compterfound=false;
  
-  onCreateConfirm(event):void { 
-    this.virementService.findAccountNum(event.newData.numeroCompte).subscribe(
-      (data) => {
 
-        this.compterfound=true
-        event.confirm.resolve(event.newData);
-      },
-
-        (error)=>{
-          this.compterfound=false
-          event.confirm.reject();
-      alert('Le numero de compte est invalide verifiez vos données')
-          
-        }
-        );
-      }
       getBenef(){
         this.benefService.GetAllBenefOfClient(this.currentClientId).subscribe(
           (response:BeneficiaireModule[]) => { 
@@ -206,18 +196,34 @@ compterfound=false;
             res => {
               console.log("succes")
               this.getBenef()
+              Swal.fire(
+                'Success!',
+                'Beneficiaire ajouté avec success.',
+                'success'
+              )
           
            }, 
            (errorr:HttpErrorResponse) => {
-    
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Beneficiaire existant deja',
+              
+            })
             console.log(errorr)
             });
     
          }, 
          (errorr:HttpErrorResponse) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Ce Compte nexiste pas!',
+            
+          })
                     this.getBenef();
 
-    
+                    
           });
          
          
@@ -227,41 +233,89 @@ compterfound=false;
         
         onDeleteClient(event) {
           console.log('deleeeeeeeeeete')
-
-            this.benefService.DeleteBenef(event.data.id).subscribe(
-              res => {
-            
-              this.getBenef();
-             }, 
-             (error:HttpErrorResponse) => {
-              console.log(error)
+          Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.benefService.DeleteBenef(event.data.id).subscribe(
+                res => {
               
-              });   
+                this.getBenef();
+                Swal.fire(
+                  'Deleted!',
+                  'Your benefeciaire has been deleted.',
+                  'success'
+                )
+               }, 
+               (error:HttpErrorResponse) => {
+                console.log(error)
+                
+                });   
+              
+            }
+          })
+          
         }
 
         onEditSolde(event){
 
         }
 
-       
+   
+        
       selectedData:BeneficiaireModule[]= []
       selectedBenef:BeneficiaireModule
       onCustomAction(event:any):void{
-        this.selectedBenef=event.data
-        this.selectedData.push(this.selectedBenef)   
-        var result = this.selectedData.reduce((unique, o) => {
-          if(!unique.some(obj => obj.numeroCompte === o.numeroCompte)) {
-            unique.push(o);
-          }
-          return unique;
-      },[]);
-      console.log('resss')
-      console.log(result);
-
-       this.sourceTab2 = new LocalDataSource(result);
+        Swal.fire({
+          title: 'Entrez Montant',
+          input: 'text',
+          inputAttributes: {
+            pattern: '^[0-9]*$'
+         
+          },
+          showCancelButton: true,
+          confirmButtonText: 'Look up',
+        
+         
+        }).then((valeur) => {
+          this.selectedBenef=event.data
+          this.selectedBenef.montant=valeur.value
+          this.selectedData.push(this.selectedBenef)   
+          var result = this.selectedData.reduce((unique, o) => {
+            if(!unique.some(obj => obj.numeroCompte === o.numeroCompte)) {
+              console.log(unique.some(obj => obj.numeroCompte === o.numeroCompte))
+              unique.push(o);
+              
+  
+            }
+            
+            return unique;
+            
+        },[]);
+        console.log('resss')
+        console.log(result);
+  
+         this.sourceTab2 = new LocalDataSource(result);
+      });
+      
       }
       sourceTab2: LocalDataSource
-
+      deleteBenefTab2(event) {
+        console.log("je mexecute")
+        console.log(event.data)
+        const index: number =  this.selectedData.indexOf(event.data);
+        console.log(index)
+        if (index !== -1) {
+            this.selectedData.splice(index, 1);
+            this.sourceTab2 = new LocalDataSource(this.selectedData);
+        }        
+    }
 
 
       onSubmit(){
