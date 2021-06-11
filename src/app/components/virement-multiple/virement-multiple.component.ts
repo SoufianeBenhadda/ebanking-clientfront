@@ -6,6 +6,7 @@ import { Accounts } from 'src/app/account/module/account.module';
 import { AccountService } from 'src/app/account/service/account.service';
 import { BeneficiaireModule } from 'src/app/beneficiaire/module/beneficiaire/beneficiaire.module';
 import { BeneficiaireService } from 'src/app/beneficiaire/service/beneficiaire.service';
+import { ClientService } from 'src/app/client/service/client.service';
 
 
 interface Compte {
@@ -37,14 +38,14 @@ export class VirementMultipleComponent implements OnInit {
   currentClientId: string;
   currentClientName: string;
   benef: BeneficiaireModule[];
-  constructor( private virementService:AccountService, private benefService:BeneficiaireService) { 
+  constructor( private virementService:AccountService, private benefService:BeneficiaireService,private clientService:ClientService) { 
     this.source = new LocalDataSource(this.data);
   }
 
   ngOnInit(): void {
     this.currentClientId = sessionStorage.getItem('currentClientId');
     this.currentClientName = sessionStorage.getItem('name');
-
+    this.getCompteClient()
     this.getBenef();
       }
 
@@ -72,6 +73,12 @@ export class VirementMultipleComponent implements OnInit {
       deleteButtonContent: 'Delete',
       confirmDelete: true
     },
+    edit: {
+      editButtonContent: 'edit',
+      saveButtonContent: 'save',
+      cancelButtonContent: 'cancel',
+      confirmSave: true,
+    },
     columns: {
 
       numeroCompte: {
@@ -94,10 +101,12 @@ export class VirementMultipleComponent implements OnInit {
   };
 
   tab2 = {
-    actions: { add: false ,edit: false, delete: true,},
+    actions: { add: false ,edit: true, delete: true,},
     columns: {
       numeroCompte: {
-        title: 'Numéro de compte'
+        title: 'Numéro de compte',
+        editable:false,
+        addable:false
       },
       m: {
         title: 'Montant'
@@ -115,11 +124,7 @@ export class VirementMultipleComponent implements OnInit {
     }
   };
   
-  comptes: Compte[] = [
-    {value: 'id-0', viewValue: '156468131'},
-    {value: 'id-1', viewValue: '135485415'},
-    {value: 'id-2', viewValue: '156478978'}
-  ];
+  
 
   dateCre = new FormControl(new Date());
   dateExec = new FormControl(new Date());
@@ -157,7 +162,24 @@ compterfound=false;
         );
       }
 
-     
+      compteClient:Accounts[]=[];
+      getCompteClient(){
+        this.clientService.findClientAccounts(this.currentClientId).subscribe(
+          (response:Accounts[]) => {  
+            this.compteClient = response;
+            console.log(response)
+            
+          },
+          (error:HttpErrorResponse) => {
+            console.log(error)
+              }
+        );
+      }
+      selected:any;
+      onChange(event){
+        console.log(this.selected)
+
+      }
   
       clientObj={
         id:0
@@ -214,13 +236,11 @@ compterfound=false;
              (error:HttpErrorResponse) => {
               console.log(error)
               
-              });
-          
-         
-          
-          
-          
-        
+              });   
+        }
+
+        onEditSolde(event){
+
         }
 
        
@@ -228,12 +248,26 @@ compterfound=false;
       selectedBenef:BeneficiaireModule
       onCustomAction(event:any):void{
         this.selectedBenef=event.data
-       this.selectedData.push(this.selectedBenef)   
-       this.sourceTab2 = new LocalDataSource(this.selectedData);
+        this.selectedData.push(this.selectedBenef)   
+        var result = this.selectedData.reduce((unique, o) => {
+          if(!unique.some(obj => obj.numeroCompte === o.numeroCompte)) {
+            unique.push(o);
+          }
+          return unique;
+      },[]);
+      console.log('resss')
+      console.log(result);
+
+       this.sourceTab2 = new LocalDataSource(result);
       }
       sourceTab2: LocalDataSource
-      
-    
+
+
+
+      onSubmit(){
+        
+      }
+
 
 
 
