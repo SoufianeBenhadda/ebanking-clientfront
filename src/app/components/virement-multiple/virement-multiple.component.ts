@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import {FormControl} from '@angular/forms';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import { LocalDataSource } from 'ng2-smart-table';
 import { Accounts } from 'src/app/account/module/account.module';
 import { AccountService } from 'src/app/account/service/account.service';
@@ -131,8 +131,7 @@ export class VirementMultipleComponent implements OnInit {
   
   
 
-  dateCre = new FormControl(new Date());
-  dateExec = new FormControl(new Date());
+
   serializedDate = new FormControl((new Date()).toISOString());
 compterfound=false;
  
@@ -317,9 +316,48 @@ compterfound=false;
         }        
     }
 
-
+    formValue = new FormGroup({
+      dateCre: new FormControl(new Date(), [
+        Validators.required
+      ]),
+      dateExec: new FormControl(new Date(), [
+        Validators.required,
+      ]),
+      motif: new FormControl('', [
+        Validators.required,
+      ]),
+      montant: new FormControl('', [
+        Validators.required,
+      ]),
+      select: new FormControl('', [
+        Validators.required,
+      ]),
+      nombre: new FormControl('', [
+        Validators.required,
+      ]),
+      
+    });
+    get dateCre() {
+      return this.formValue.get('dateCre');
+    }
+    get dateExec() {
+      return this.formValue.get('dateExec');
+    }
+    get nombre() {
+      return this.formValue.get('nombre');
+    }
+    get motif() {
+      return this.formValue.get('motif');
+    }
+    get select() {
+      return this.formValue.get('select');
+    }
+    get montant() {
+      return this.formValue.get('montant');
+    }
       onSubmit(){
-        
+        console.log('suuuuuuuubi')
+        console.log(this.formValue.value)
       }
 
 
