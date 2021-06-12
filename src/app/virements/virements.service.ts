@@ -23,14 +23,5 @@ export class VirementsService {
     console.log("fctsave");
     return this.http.post<VirementsModule>(this.url + 's', transfer);
   }
-  authentificate2(username, password) {
-    const headers = new HttpHeaders({
-      Authorization: 'Basic ' + btoa(username + ':' + password),
-    });
-    return this.http
-      .get<Client>('http://localhost:8091/client/username/' + username, {
-        headers,
-      })
-  
-  }
+
 }

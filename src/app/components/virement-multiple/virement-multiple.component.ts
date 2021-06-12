@@ -7,7 +7,7 @@ import { AccountService } from 'src/app/account/service/account.service';
 import { BeneficiaireModule } from 'src/app/beneficiaire/module/beneficiaire/beneficiaire.module';
 import { BeneficiaireService } from 'src/app/beneficiaire/service/beneficiaire.service';
 import { ClientService } from 'src/app/client/service/client.service';
-import { LoginServiceService } from 'src/app/loginservice/login-service.service';
+
 import { VirementsService } from 'src/app/virements/virements.service';
 import Swal from 'sweetalert2';
 
@@ -43,7 +43,7 @@ export class VirementMultipleComponent implements OnInit {
   benef: BeneficiaireModule[];
   currentClientUsername: string;
   constructor( private accountService:AccountService, private benefService:BeneficiaireService,private clientService:ClientService,
-    private virementService: LoginServiceService) { 
+    private virementService: VirementsService) { 
     this.source = new LocalDataSource(this.data);
   }
 
