@@ -7,6 +7,8 @@ import { AccountService } from 'src/app/account/service/account.service';
 import { BeneficiaireModule } from 'src/app/beneficiaire/module/beneficiaire/beneficiaire.module';
 import { BeneficiaireService } from 'src/app/beneficiaire/service/beneficiaire.service';
 import { ClientService } from 'src/app/client/service/client.service';
+import { LoginServiceService } from 'src/app/loginservice/login-service.service';
+import { VirementsService } from 'src/app/virements/virements.service';
 import Swal from 'sweetalert2';
 
 
@@ -39,13 +41,16 @@ export class VirementMultipleComponent implements OnInit {
   currentClientId: string;
   currentClientName: string;
   benef: BeneficiaireModule[];
-  constructor( private virementService:AccountService, private benefService:BeneficiaireService,private clientService:ClientService) { 
+  currentClientUsername: string;
+  constructor( private accountService:AccountService, private benefService:BeneficiaireService,private clientService:ClientService,
+    private virementService: LoginServiceService) { 
     this.source = new LocalDataSource(this.data);
   }
 
   ngOnInit(): void {
     this.currentClientId = sessionStorage.getItem('currentClientId');
     this.currentClientName = sessionStorage.getItem('name');
+    this.currentClientUsername = sessionStorage.getItem('username');
     this.getCompteClient()
     this.getBenef();
       }
@@ -180,7 +185,7 @@ compterfound=false;
       onAddClient(event) {
         
       // this.onCreateConfirm(event)
-       this.virementService.findAccountNum(event.newData.numeroCompte).subscribe(
+       this.accountService.findAccountNum(event.newData.numeroCompte).subscribe(
         res => {
          console.log("res")
          console.log(res)
@@ -375,6 +380,42 @@ compterfound=false;
           console.log(this.formValue.value)
 
         }
+      }
+       swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+          confirmButton: 'btn btn-success',
+          cancelButton: 'btn btn-danger'
+        },
+        buttonsStyling: false
+      })
+      CheckPass(){
+        Swal.fire({
+          title: 'Confirmez Votre MDP',
+          input: 'text',
+         
+          showCancelButton: true,
+          confirmButtonText: 'Look up',
+        
+         
+        }).then((valeur) => {
+         
+          if(valeur.value === atob(sessionStorage.getItem('cryptedPass'))){
+            console.log('good pass')
+            // hna j3aydiiiiiiiiiiiiiiiiiiiiiiiiiii
+            this.swalWithBootstrapButtons.fire(
+              'Transaction Envoyé!',
+              '',
+              'success'
+            )
+          }
+          else  {
+            this.swalWithBootstrapButtons.fire(
+              'Wrong Password',
+              '',
+              'error'
+            )
+          }
+        })
       }
 
 
