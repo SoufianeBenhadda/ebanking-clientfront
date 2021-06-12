@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
+import { Client } from '../client/module/client.module';
 import { VirementsModule } from './virements.module';
 
 @Injectable({
@@ -9,6 +10,8 @@ import { VirementsModule } from './virements.module';
 export class VirementsService {
 
   private url: string;
+ 
+ 
   constructor(private http: HttpClient) {
     this.url = 'http://localhost:8091/virement';
   }
@@ -19,5 +22,15 @@ export class VirementsService {
   } public save(transfer: VirementsModule) {
     console.log("fctsave");
     return this.http.post<VirementsModule>(this.url + 's', transfer);
+  }
+  authentificate2(username, password) {
+    const headers = new HttpHeaders({
+      Authorization: 'Basic ' + btoa(username + ':' + password),
+    });
+    return this.http
+      .get<Client>('http://localhost:8091/client/username/' + username, {
+        headers,
+      })
+  
   }
 }
