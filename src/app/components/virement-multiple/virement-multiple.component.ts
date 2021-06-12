@@ -286,7 +286,7 @@ compterfound=false;
           this.selectedBenef=event.data
           this.selectedBenef.montant=valeur.value
           this.selectedData.push(this.selectedBenef)   
-          var result = this.selectedData.reduce((unique, o) => {
+          this.result = this.selectedData.reduce((unique, o) => {
             if(!unique.some(obj => obj.numeroCompte === o.numeroCompte)) {
               console.log(unique.some(obj => obj.numeroCompte === o.numeroCompte))
               unique.push(o);
@@ -298,12 +298,13 @@ compterfound=false;
             
         },[]);
         console.log('resss')
-        console.log(result);
+        console.log(this.result);
   
-         this.sourceTab2 = new LocalDataSource(result);
+         this.sourceTab2 = new LocalDataSource(this.result);
       });
       
       }
+      result:any[];
       sourceTab2: LocalDataSource
       deleteBenefTab2(event) {
         console.log("je mexecute")
@@ -355,9 +356,25 @@ compterfound=false;
     get montant() {
       return this.formValue.get('montant');
     }
+
+    ifBenef:boolean
+    ifMontant:boolean
       onSubmit(){
-        console.log('suuuuuuuubi')
-        console.log(this.formValue.value)
+        var sumMontant:number = this.result.map(a => parseFloat(a.montant)).reduce(function(a, b){return a + b;});
+        console.log(sumMontant)
+        if(this.formValue.value.nombre!=this.result.length){
+          this.ifBenef=true;
+          console.log('warah mkhtalfin')          
+        }
+        if(this.formValue.value.montant != sumMontant){
+          this.ifMontant = true;
+        }
+        else{
+          this.ifMontant = false;
+          this.ifBenef=false;
+          console.log(this.formValue.value)
+
+        }
       }
 
 

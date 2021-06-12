@@ -76,14 +76,21 @@
            
         </mat-grid-tile>
 
-
+        
         <mat-grid-tile>
+            
+            <mat-error *ngIf="ifBenef">
+                Le nombre de beneficiaires saisie est different au nombre de beneficiaires selectionnés
+              </mat-error>
             <h4>Nombre de bénéficiaires :</h4>
                 <mat-form-field class="example-full-width">
                 <input matInput type="number" formControlName="nombre">
                 </mat-form-field>
         </mat-grid-tile>
         <mat-grid-tile>
+            <mat-error *ngIf="ifMontant">
+                Le montant totale doit etre egale a la somme des montants des beneficiaires
+            </mat-error>
             <h4>Montant : </h4>
                 <mat-form-field class="example-full-width">
                 <input matInput type="number" formControlName="montant">

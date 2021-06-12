@@ -25,7 +25,7 @@ export class BeneficiaireService {
     
   }
   public GetAllBenefOfClient(id:string): Observable<BeneficiaireModule[]> {
-    return this.http.get<BeneficiaireModule[]>('http://localhost:8091/client/36/benef');
+    return this.http.get<BeneficiaireModule[]>('http://localhost:8091/client/${id}/benef');
     
   }
 }
